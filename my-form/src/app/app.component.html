@@ -1,0 +1,81 @@
+<!--The content below is only a placeholder and can be replaced.-->
+<div style="text-align:center">
+  <h1>
+    Welcome to {{ title }}!
+  </h1>
+  <img width="100" alt="Angular Logo" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTAgMjUwIj4KICAgIDxwYXRoIGZpbGw9IiNERDAwMzEiIGQ9Ik0xMjUgMzBMMzEuOSA2My4ybDE0LjIgMTIzLjFMMTI1IDIzMGw3OC45LTQzLjcgMTQuMi0xMjMuMXoiIC8+CiAgICA8cGF0aCBmaWxsPSIjQzMwMDJGIiBkPSJNMTI1IDMwdjIyLjItLjFWMjMwbDc4LjktNDMuNyAxNC4yLTEyMy4xTDEyNSAzMHoiIC8+CiAgICA8cGF0aCAgZmlsbD0iI0ZGRkZGRiIgZD0iTTEyNSA1Mi4xTDY2LjggMTgyLjZoMjEuN2wxMS43LTI5LjJoNDkuNGwxMS43IDI5LjJIMTgzTDEyNSA1Mi4xem0xNyA4My4zaC0zNGwxNy00MC45IDE3IDQwLjl6IiAvPgogIDwvc3ZnPg==">
+</div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-8">
+
+      <div class="alert alert-danger" *ngIf="errorMsg">{{errorMsg}}</div>
+
+    <form #userForm = 'ngForm' (ngSubmit)="onSubmit()">
+
+      <div class="form-group">
+        <label>Name</label>
+        <input type="text" required #name="ngModel" [(ngModel)]=userModel.userName 
+        [class.is-valid]="name.valid" [class.is-invalid]="name.invalid && name.touched"
+         class="form-control" name="userName" >
+         <small class="text-danger" [class.d-none]="name.valid || name.untouched">Name is required</small>
+      </div>
+
+      <div class="form-group">
+        <label >Emaill</label>
+        <input type="email" class="form-control" required #email="ngModel" [class.is-invalid]="email.invalid"
+         name="email" [(ngModel)]=userModel.email>
+        <div *ngIf="email.errors && (email.invalid)">
+          <small class="text-danger" *ngIf="email.errors.required">email required</small>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="">Phone</label>
+        <input type="tel" class="form-control" required #phone="ngModel" pattern="^\d{5}$"
+        [class.is-invalid]="phone.invalid" name="phone" [(ngModel)]=userModel.phone>
+         <!-- <small class="text-danger" [class.d-none]="phone.valid || phone.untouched">phone number is required and must be 5 digits</small> -->
+        <div *ngIf="phone.errors && (phone.invalid || phone.touched)">
+          <small class="text-danger" *ngIf="phone.errors.required">phone number is required</small>
+          <small class="text-danger" *ngIf="phone.errors.pattern">Phone no must be 5 digits</small>
+        </div> 
+      </div>
+    
+
+      <div class="form-group">
+        <label for="">Select Course</label>
+        <select class="custom-select"  name="topic" required #topic="ngModel"
+         [class.is-invalid]=" topic.pristine && topic.touched" [(ngModel)]=userModel.topic>
+          <option *ngFor='let topic of topics'>{{topic}}</option>
+        </select>
+        <small class="text-danger" [class.d-none]="topic.valid || topic.untouched">Pls select course</small>
+      </div>
+      
+      <div class="mb-3">
+        <label for="">Time Preference </label>
+        <div class="form-check">
+          <input type="radio" class="form-check-input" [(ngModel)]=userModel.timePrefernce name="timePreference" value="morning"> 
+          <label class="form-check-label"> Morning (9AM to 12PM)</label>
+        </div>
+        <div class="form-check">
+          <input type="radio" class="form-check-input" [(ngModel)]=userModel.timePreference name="timePreference" value="evening"> 
+          <label class="form-check-label"> Evening (5AM to 8PM)</label>
+        </div>
+      </div>
+
+      <div class="form-check mb-3">
+        <input class="form-check-input" name="offers" [(ngModel)]=userModel.offers type="checkbox">
+        <label class="form-check-label" for="">Send me Offers !</label>
+      </div>
+
+      <button [disabled]="userForm.form.invalid" class="btn btn-success" type="submit">Submit</button> 
+
+       <button  class="btn btn-danger ml-3" type="reset">Clear</button>
+
+    </form>
+    </div>
+  </div>
+</div>
+
+<router-outlet></router-outlet>
